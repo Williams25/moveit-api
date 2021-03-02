@@ -18,6 +18,8 @@ module.exports = {
   create: async (req, res) => {
     const { userName, password } = req.body
 
+    if (!userName || !password) return res.status(400).json({ message: 'Campos invalidos, verifique os campos e tente novamente.' })
+
     const userExisting = await User.findOne({ where: { userName } })
 
     if (userExisting) return res.status(400).json({ message: 'Usuario não disponivel' })
@@ -34,8 +36,12 @@ module.exports = {
   },
 
   findAll: async (req, res) => {
-    const users = await User.findAll()
-    return res.status(200).json(users)
+    try {
+      const users = await User.findAll()
+      return res.status(200).json(users)
+    } catch (error) {
+      return res.status(400).json({ message: error.message })
+    }
   },
 
   ranking: async (req, res) => {
