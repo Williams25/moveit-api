@@ -4,11 +4,14 @@
   "description": "",
   "main": "./src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./src/server.js",
     "create-migration": "npx sequelize-cli  migration:create --name",
     "migrate": "npx sequelize db:migrate",
-    "revert-migration": "npx sequelize-cli db:migrate:undo"
+    "revert-migration": "npx sequelize-cli db:migrate:undo",
+    "jest-init": "npx jest --init",
+    "pretest": "set NODE_ENV=test&&npx sequelize db:migrate",
+    "test": "set NODE_ENV=test&&jest -i --detectOpenHandles",
+    "posttest": "set NODE_ENV=test&&npx sequelize-cli db:migrate:undo:all"
   },
   "repository": {
     "type": "git",
@@ -32,5 +35,9 @@
     "sequelize": "^6.5.0",
     "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "supertest": "^6.1.3"
   }
 }
