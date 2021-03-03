@@ -12,4 +12,14 @@ module.exports = {
 
     return res.status(200).json({ userId, level, currentExperience, challengesCompleted })
   },
+
+  findOne: async (req, res) => {
+    const { userId } = req.params
+
+    const move = await Moves.findOne({ where: { userId } })
+
+    if (!move) return res.status(400).json({ message: 'Usuario não encontrado' })
+
+    return res.status(200).json(move)
+  }
 }
