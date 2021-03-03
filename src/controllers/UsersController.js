@@ -6,10 +6,13 @@ const { githubProfile } = require('../services')
 module.exports = {
   login: async (req, res) => {
     const { userName, password } = req.body
+
+    if(!userName || !password) return res.status(400).json({message: 'Campos invalidos, verifique os campos e tente novamente.'})
+
     const user = await User.findOne({ where: { userName } })
 
     await bcrypt.compare(password, user.password, (err, result) => {
-      if (!result) return res.status(401).json({ mensagem: 'Falha na autenticação' })
+      if (!result) return res.status(401).json({ message: 'Falha na autenticação' })
 
       return res.status(202).json(user)
     })
